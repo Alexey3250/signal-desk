@@ -80,6 +80,7 @@ svg {
   gap: 10px;
   min-width: 0;
   font-weight: 800;
+  white-space: nowrap;
 }
 
 .brand-mark,
@@ -393,6 +394,7 @@ h1 {
 
 .section-band {
   padding: 52px 0 8px;
+  scroll-margin-top: 86px;
 }
 
 .section-heading {
@@ -1228,12 +1230,18 @@ h1 {
   }
 
   .topnav {
-    width: auto;
-    overflow-x: auto;
-    padding-bottom: 2px;
-    gap: 2px;
-    font-size: 12px;
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    min-width: 0;
+    overflow-x: visible;
+    padding-bottom: 0;
+    gap: 0;
+    font-size: 11.5px;
     white-space: nowrap;
+  }
+
+  .topnav a {
+    padding: 7px 6px;
   }
 
   .brand-lockup {
@@ -1358,5 +1366,30 @@ h1 {
 
   .footer-links a {
     width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  .topbar {
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .topbar .brand-mark {
+    display: none;
+  }
+
+  .brand-lockup,
+  .back-link {
+    gap: 6px;
+    font-size: 14px;
+  }
+
+  .topnav {
+    font-size: 11px;
+  }
+
+  .topnav a {
+    padding: 7px 5px;
   }
 }
