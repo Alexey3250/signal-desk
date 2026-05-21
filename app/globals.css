@@ -796,8 +796,8 @@ h1 {
 .chart-card {
   display: grid;
   align-content: start;
-  gap: 10px;
-  padding: 14px;
+  gap: 8px;
+  padding: 13px 12px 12px;
   box-shadow: 0 6px 22px rgba(17, 24, 39, 0.045);
 }
 
@@ -819,8 +819,9 @@ h1 {
 }
 
 .chart-card > svg {
-  width: 100%;
+  width: calc(100% + 26px);
   height: auto;
+  margin-inline: -13px;
   min-height: 0;
 }
 
@@ -831,7 +832,7 @@ h1 {
 
 .chart-card text {
   fill: var(--muted);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 800;
 }
 
@@ -847,7 +848,7 @@ h1 {
 .line-blue,
 .line-red {
   fill: none;
-  stroke-width: 4.8;
+  stroke-width: 5.4;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -863,7 +864,7 @@ h1 {
 .dot-blue,
 .dot-red {
   fill: var(--surface);
-  stroke-width: 3.2;
+  stroke-width: 3.6;
 }
 
 .dot-blue {
@@ -876,7 +877,7 @@ h1 {
 
 .chart-callout {
   fill: var(--ink);
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .chart-label-pill rect,
@@ -893,16 +894,16 @@ h1 {
 }
 
 .chart-label-pill text {
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .chart-annotation text {
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .chart-annotation text:first-of-type {
   fill: var(--teal);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .bar-muted {
@@ -1192,7 +1193,7 @@ h1 {
 
   .detail-shell .chart-card > svg {
     justify-self: end;
-    max-width: 440px;
+    max-width: 480px;
   }
 
   .matrix-row {
