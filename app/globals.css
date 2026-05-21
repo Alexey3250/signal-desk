@@ -820,6 +820,11 @@ h1 {
   min-height: 250px;
 }
 
+.chart-card:nth-child(3) > svg {
+  justify-self: center;
+  max-width: 780px;
+}
+
 .chart-card text {
   fill: var(--muted);
   font-size: 13px;
@@ -868,6 +873,32 @@ h1 {
 .chart-callout {
   fill: var(--ink);
   font-size: 15px;
+}
+
+.chart-label-pill rect,
+.chart-annotation rect {
+  fill: #f8fbfc;
+  stroke: #dbe5ec;
+}
+
+.chart-label-pill text,
+.chart-annotation text,
+.chart-value-label {
+  fill: #566574;
+  font-weight: 850;
+}
+
+.chart-label-pill text {
+  font-size: 13px;
+}
+
+.chart-annotation text {
+  font-size: 12px;
+}
+
+.chart-annotation text:first-of-type {
+  fill: var(--teal);
+  font-size: 13px;
 }
 
 .bar-muted {

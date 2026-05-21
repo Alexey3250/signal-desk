@@ -209,23 +209,36 @@ function PriceIndexChart() {
       <text x="40" y="46">140</text>
       <text x="47" y="240">2020</text>
       <text x="556" y="240">2025</text>
-      <text className="chart-callout" x="438" y="122">Index 108</text>
+      <g className="chart-label-pill">
+        <rect x="405" y="93" width="92" height="30" rx="7" />
+        <text x="418" y="113">Index 108</text>
+      </g>
     </svg>
   );
 }
 
 function DemandShareChart() {
   return (
-    <svg viewBox="0 0 620 260" role="img" aria-label="Chinese brand demand share rose from 3 percent to 13 percent">
-      <line className="axis" x1="72" y1="212" x2="568" y2="212" />
-      <line className="axis" x1="72" y1="40" x2="72" y2="212" />
-      <rect className="bar-muted" x="126" y="174" width="94" height="38" rx="6" />
-      <rect className="bar-teal" x="398" y="74" width="94" height="138" rx="6" />
-      <text x="142" y="164">3%</text>
-      <text x="408" y="64">13%</text>
-      <text x="128" y="238">2024</text>
-      <text x="398" y="238">2025</text>
-      <text className="chart-callout" x="312" y="120">Demand share widened</text>
+    <svg viewBox="0 0 620 280" role="img" aria-label="Chinese brand demand share rose from 3 percent to 13 percent">
+      <g className="chart-grid">
+        <line x1="82" y1="64" x2="558" y2="64" />
+        <line x1="82" y1="114" x2="558" y2="114" />
+        <line x1="82" y1="164" x2="558" y2="164" />
+        <line x1="82" y1="214" x2="558" y2="214" />
+      </g>
+      <line className="axis" x1="82" y1="226" x2="558" y2="226" />
+      <line className="axis" x1="82" y1="48" x2="82" y2="226" />
+      <rect className="bar-muted" x="154" y="188" width="108" height="38" rx="8" />
+      <rect className="bar-teal" x="392" y="74" width="108" height="152" rx="8" />
+      <text className="chart-value-label" x="190" y="176">3%</text>
+      <text className="chart-value-label" x="426" y="62">13%</text>
+      <text x="174" y="254">2024</text>
+      <text x="412" y="254">2025</text>
+      <g className="chart-annotation">
+        <rect x="278" y="92" width="104" height="44" rx="8" />
+        <text x="292" y="111">+10 pp</text>
+        <text x="292" y="128">share gain</text>
+      </g>
     </svg>
   );
 }
