@@ -256,6 +256,11 @@ export default function AutomotivePage() {
             A market analysis case study reviewing pricing patterns, segment trends, and
             business implications for dealers and platforms.
           </p>
+          <div className="hero-meta" aria-label="Study format">
+            <span>Dashboard</span>
+            <span>Market study</span>
+            <span>Product implications</span>
+          </div>
           <div className="hero-pills" aria-label="Case study themes">
             <span>Supply abundance</span>
             <span>Slow stock turn</span>

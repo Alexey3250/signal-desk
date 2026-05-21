@@ -95,6 +95,11 @@ export default function Home() {
             Sector-focused dashboards and market studies that turn raw data into business
             insight.
           </p>
+          <div className="hero-meta" aria-label="Portfolio coverage">
+            <span>Market intelligence</span>
+            <span>Executive dashboards</span>
+            <span>Sector studies</span>
+          </div>
           <div className="hero-actions">
             <Link href="/automotive" className="button primary">
               Open automotive desk
@@ -116,6 +121,10 @@ export default function Home() {
             <span>Portfolio map</span>
             <Radar size={18} aria-hidden="true" />
           </div>
+          <p className="panel-copy">
+            A focused publishing system for turning messy sector data into decision-ready
+            narratives.
+          </p>
           <div className="metric-grid compact">
             {portfolioMetrics.map((metric) => (
               <article className="metric-card" key={metric.label}>
@@ -138,7 +147,7 @@ export default function Home() {
             const Icon = sector.icon;
 
             return (
-              <article className="sector-card" key={sector.label}>
+              <article className={`sector-card ${sector.label === "Automotive" ? "is-live" : ""}`} key={sector.label}>
                 <div className="sector-icon" aria-hidden="true">
                   <Icon size={21} />
                 </div>

@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
+import { SiteFooter } from "./components/SiteFooter";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Signal Desk",
   description:
-    "Sector-focused analytics dashboards and market studies that turn raw data into business insight."
+    "Sector-focused analytics dashboards and market studies that turn raw data into business insight.",
+  authors: [{ name: "Alexey" }],
+  creator: "Alexey"
 };
 
 export default function RootLayout({
@@ -14,7 +17,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <SiteFooter />
+      </body>
     </html>
   );
 }
