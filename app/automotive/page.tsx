@@ -3,12 +3,9 @@ import type { Metadata } from "next";
 import {
   ArrowLeft,
   ArrowUpRight,
-  BarChart3,
   Database,
   Gauge,
-  LineChart,
-  ShieldCheck,
-  TrendingDown
+  ShieldCheck
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -297,7 +294,6 @@ export default function AutomotivePage() {
                 <h3>Active vehicle base kept rising</h3>
                 <p>Registered active vehicles proxy, millions.</p>
               </div>
-              <LineChart size={20} aria-hidden="true" />
             </div>
             <VehicleBaseChart />
           </article>
@@ -307,7 +303,6 @@ export default function AutomotivePage() {
                 <h3>Used-car pricing softened</h3>
                 <p>Price index moved below the shortage-cycle peak.</p>
               </div>
-              <TrendingDown size={20} aria-hidden="true" />
             </div>
             <PriceIndexChart />
           </article>
@@ -317,7 +312,6 @@ export default function AutomotivePage() {
                 <h3>Chinese brands reset value anchors</h3>
                 <p>Demand share rose from a small base into a real pricing force.</p>
               </div>
-              <BarChart3 size={20} aria-hidden="true" />
             </div>
             <DemandShareChart />
           </article>
