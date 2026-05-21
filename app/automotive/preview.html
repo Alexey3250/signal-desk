@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dubai Auto Market Intelligence Dashboard</title>
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg2: #0b1c31;
+      --card: rgba(255, 255, 255, 0.075);
+      --card2: rgba(255, 255, 255, 0.11);
+      --border: rgba(255, 255, 255, 0.14);
+      --text: #eef6ff;
+      --muted: #a8b8c9;
+      --soft: #d8e5f2;
+      --blue: #52b8ff;
+      --cyan: #42eadc;
+      --green: #65e6a5;
+      --amber: #ffca64;
+      --orange: #ff9d5c;
+      --red: #ff6b77;
+      --purple: #b891ff;
+      --shadow: 0 24px 80px rgba(0,0,0,.38);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% -10%, rgba(82,184,255,.27), transparent 35%),
+        radial-gradient(circle at 95% 5%, rgba(101,230,165,.18), transparent 30%),
+        radial-gradient(circle at 70% 85%, rgba(184,145,255,.16), transparent 35%),
+        linear-gradient(145deg, #06101e 0%, #071827 45%, #09111d 100%);
+      min-height: 100vh;
+    }
+
+    .page {
+      width: min(1440px, calc(100% - 44px));
+      margin: 0 auto;
+      padding: 34px 0 70px;
+    }
+
+    .topnav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 28px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 12px 0;
+      backdrop-filter: blur(14px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--soft);
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      box-shadow: 0 0 26px rgba(66,234,220,.35);
+      position: relative;
+    }
+    .brand-mark:after {
+      content: "";
+      position: absolute;
+      inset: 9px;
+      border: 2px solid rgba(7,17,31,.75);
+      border-radius: 8px;
+    }
+
+    .navlinks {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .navlinks a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12px;
+      border: 1px solid var(--border);
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+    }
+    .navlinks a:hover { color: var(--text); border-color: rgba(82,184,255,.55); }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 24px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
+    .hero-main, .hero-side, .card, .section, .quote-card, .mini-card, .table-wrap {
+      background: linear-gradient(145deg, rgba(255,255,255,.105), rgba(255,255,255,.045));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .hero-main {
+      padding: 34px;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-main:before {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      right: -110px;
+      top: -120px;
+      background: radial-gradient(circle, rgba(82,184,255,.32), transparent 64%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      color: var(--cyan);
+      text-transform: uppercase;
+      font-weight: 750;
+      font-size: 12px;
+      letter-spacing: .14em;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(38px, 5vw, 72px);
+      line-height: .95;
+      letter-spacing: -0.06em;
+      max-width: 860px;
+    }
+
+    .subtitle {
+      margin: 20px 0 0;
+      color: var(--soft);
+      font-size: clamp(17px, 1.6vw, 24px);
+      line-height: 1.45;
+      max-width: 900px;
+    }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 25px;
+    }
+    .pill {
+      font-size: 13px;
+      color: var(--soft);
+      padding: 9px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+    }
+    .pill strong { color: var(--text); }
+
+    .hero-side {
+      padding: 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 330px;
+      background:
+        linear-gradient(145deg, rgba(255,202,100,.12), rgba(255,255,255,.05)),
+        linear-gradient(145deg, rgba(255,255,255,.105), rgba(255,255,255,.045));
+    }
+    .big-label {
+      color: var(--amber);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .big-thesis {
+      font-size: 34px;
+      line-height: 1.04;
+      letter-spacing: -.04em;
+      font-weight: 850;
+    }
+    .side-copy {
+      color: var(--soft);
+      font-size: 15px;
+      line-height: 1.55;
+      margin-top: 16px;
+    }
+
+    .grid { display: grid; gap: 18px; }
+    .kpi-grid { grid-template-columns: repeat(6, 1fr); margin-bottom: 24px; }
+    .kpi {
+      padding: 19px;
+      min-height: 155px;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi:after {
+      content: "";
+      position: absolute;
+      right: -44px;
+      top: -44px;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: rgba(82,184,255,.11);
+    }
+    .kpi .label {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      min-height: 34px;
+    }
+    .kpi .value {
+      margin-top: 14px;
+      font-size: 33px;
+      font-weight: 850;
+      letter-spacing: -.05em;
+    }
+    .kpi .delta {
+      margin-top: 9px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--soft);
+      border-radius: 999px;
+      padding: 6px 8px;
+      background: rgba(255,255,255,.055);
+    }
+    .delta.good { color: var(--green); }
+    .delta.warn { color: var(--amber); }
+    .delta.bad { color: var(--red); }
+
+    section { margin-top: 24px; }
+    .section { padding: 26px; }
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-size: 28px;
+      line-height: 1.08;
+      letter-spacing: -.04em;
+      margin: 0;
+    }
+    .section-note {
+      color: var(--muted);
+      max-width: 590px;
+      line-height: 1.5;
+      margin: 7px 0 0;
+      font-size: 14px;
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.13);
+      background: rgba(255,255,255,.055);
+      padding: 8px 10px;
+      color: var(--soft);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .two-col { grid-template-columns: 1fr 1fr; }
+    .three-col { grid-template-columns: repeat(3, 1fr); }
+    .four-col { grid-template-columns: repeat(4, 1fr); }
+    .wide-narrow { grid-template-columns: 1.35fr .65fr; }
+    .narrow-wide { grid-template-columns: .8fr 1.2fr; }
+
+    .chart-card {
+      padding: 20px;
+      background: rgba(4,12,22,.42);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 18px;
+      min-height: 320px;
+      position: relative;
+      overflow: hidden;
+    }
+    .chart-title {
+      margin: 0 0 4px;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+    .chart-sub {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .chart-wrap { height: 230px; }
+    svg { width: 100%; height: 100%; overflow: visible; }
+    .axis { stroke: rgba(255,255,255,.18); stroke-width: 1; }
+    .gridline { stroke: rgba(255,255,255,.08); stroke-width: 1; }
+    .line-blue { fill: none; stroke: var(--blue); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    .line-green { fill: none; stroke: var(--green); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    .line-red { fill: none; stroke: var(--red); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+    .dot { fill: #fff; stroke-width: 3; }
+    .svg-label { fill: var(--muted); font-size: 11px; }
+    .svg-value { fill: var(--text); font-size: 12px; font-weight: 800; }
+
+    .regime {
+      display: grid;
+      grid-template-columns: 1fr 54px 1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .regime-card {
+      padding: 22px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.055);
+    }
+    .regime-card h3 { margin: 0; font-size: 22px; letter-spacing: -.03em; }
+    .regime-card p { color: var(--soft); line-height: 1.55; margin: 12px 0 0; }
+    .arrow {
+      display: grid;
+      place-items: center;
+      color: var(--cyan);
+      font-size: 30px;
+      font-weight: 900;
+    }
+    .micro-list { margin: 16px 0 0; padding: 0; list-style: none; }
+    .micro-list li {
+      border-top: 1px solid rgba(255,255,255,.09);
+      padding: 10px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .micro-list strong { color: var(--text); }
+
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 18px;
+      font-size: 13px;
+    }
+    th, td {
+      text-align: left;
+      padding: 15px 14px;
+      border-bottom: 1px solid rgba(255,255,255,.09);
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      font-size: 11px;
+      font-weight: 850;
+      background: rgba(255,255,255,.055);
+    }
+    td { color: var(--soft); line-height: 1.45; }
+    td strong { color: var(--text); }
+    tr:last-child td { border-bottom: none; }
+    .status {
+      display: inline-flex;
+      border-radius: 999px;
+      padding: 6px 8px;
+      font-size: 11px;
+      font-weight: 800;
+      white-space: nowrap;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .stable { color: var(--green); background: rgba(101,230,165,.08); }
+    .soft { color: var(--amber); background: rgba(255,202,100,.09); }
+    .risk { color: var(--red); background: rgba(255,107,119,.09); }
+    .volatile { color: var(--purple); background: rgba(184,145,255,.09); }
+
+    .shock-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .shock-card {
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.11);
+      background: rgba(255,255,255,.055);
+    }
+    .shock-card .metric { font-size: 30px; font-weight: 900; letter-spacing: -.05em; }
+    .shock-card .caption { color: var(--muted); font-size: 12px; line-height: 1.4; margin-top: 8px; }
+
+    .podcast-grid { grid-template-columns: repeat(5, 1fr); }
+    .quote-card {
+      min-height: 210px;
+      padding: 20px;
+      background: linear-gradient(150deg, rgba(82,184,255,.12), rgba(255,255,255,.045));
+      position: relative;
+    }
+    .quote-card .num {
+      color: var(--cyan);
+      font-weight: 900;
+      font-size: 12px;
+      margin-bottom: 25px;
+      letter-spacing: .12em;
+    }
+    .quote-card blockquote {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.24;
+      letter-spacing: -.03em;
+      font-weight: 800;
+    }
+
+    .action-card {
+      padding: 20px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(255,255,255,.1);
+    }
+    .action-card h3 { margin: 0; font-size: 18px; letter-spacing: -.02em; }
+    .action-card p { color: var(--muted); margin: 10px 0 0; line-height: 1.5; font-size: 13px; }
+
+    .scenario { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .scenario-card {
+      padding: 22px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.055);
+      min-height: 245px;
+    }
+    .scenario-card .prob {
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: -.05em;
+      margin: 8px 0 8px;
+    }
+    .scenario-card h3 { margin: 0; font-size: 22px; letter-spacing: -.03em; }
+    .scenario-card p { color: var(--soft); line-height: 1.5; font-size: 13px; }
+    .scenario-card ul { padding-left: 18px; color: var(--muted); line-height: 1.55; font-size: 13px; }
+
+    .method {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+      max-width: 1020px;
+    }
+    .method strong { color: var(--text); }
+
+    .final-box {
+      padding: 30px;
+      border-radius: 24px;
+      background:
+        linear-gradient(135deg, rgba(66,234,220,.15), rgba(82,184,255,.08)),
+        rgba(255,255,255,.06);
+      border: 1px solid rgba(66,234,220,.25);
+      box-shadow: 0 30px 90px rgba(0,0,0,.32);
+    }
+    .final-box h2 {
+      margin: 0 0 14px;
+      font-size: 32px;
+      letter-spacing: -.04em;
+    }
+    .final-box p {
+      margin: 0;
+      font-size: 18px;
+      color: var(--soft);
+      line-height: 1.55;
+      max-width: 1120px;
+    }
+
+    .legend {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .swatch { width: 10px; height: 10px; border-radius: 999px; display: inline-block; }
+
+    @media (max-width: 1180px) {
+      .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+      .podcast-grid { grid-template-columns: repeat(2, 1fr); }
+      .shock-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 860px) {
+      .page { width: min(100% - 24px, 1440px); padding-top: 18px; }
+      .topnav { position: static; align-items: flex-start; flex-direction: column; }
+      .hero, .two-col, .three-col, .four-col, .wide-narrow, .narrow-wide, .scenario { grid-template-columns: 1fr; }
+      .hero-main { padding: 25px; }
+      .hero-side { min-height: 0; }
+      .regime { grid-template-columns: 1fr; }
+      .arrow { transform: rotate(90deg); }
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+      .podcast-grid { grid-template-columns: 1fr; }
+      .shock-strip { grid-template-columns: 1fr; }
+      table { min-width: 830px; }
+      .table-wrap { overflow-x: auto; }
+    }
+    @media print {
+      body { background: #07111f; }
+      .topnav { position: static; }
+      .page { width: calc(100% - 28px); }
+      .card, .section, .hero-main, .hero-side { box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="topnav">
+      <div class="brand"><span class="brand-mark"></span><span>Dubai Auto Market Pulse</span></div>
+      <div class="navlinks">
+        <a href="#regime">Regime Shift</a>
+        <a href="#charts">Market Signals</a>
+        <a href="#segments">Segments</a>
+        <a href="#shock">Shock Analysis</a>
+        <a href="#algodriven">AlgoDriven Angles</a>
+        <a href="#podcast">Podcast Hooks</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-main">
+        <div class="eyebrow">12-month UAE/Dubai automotive market intelligence</div>
+        <h1>From scarcity pricing to inventory economics.</h1>
+        <p class="subtitle">Dubai’s car market did not break. It moved into a more competitive phase where pricing power depends on segment, specification confidence, stock age, buyer urgency, and export demand.</p>
+        <div class="hero-pills">
+          <span class="pill"><strong>Theme:</strong> supply abundance</span>
+          <span class="pill"><strong>Risk:</strong> slow stock turn</span>
+          <span class="pill"><strong>Winner:</strong> export-grade large SUVs</span>
+          <span class="pill"><strong>Pressure:</strong> sedans, luxury, overstocked units</span>
+          <span class="pill"><strong>Data edge:</strong> spec + history + time-to-sell</span>
+        </div>
+      </div>
+      <aside class="hero-side">
+        <div>
+          <div class="big-label">One CEO-level sentence</div>
+          <div class="big-thesis">Dubai did not lose cars. It lost urgency.</div>
+        </div>
+        <p class="side-copy">The vehicle base kept growing, but conversion slowed. That is why the market moved from “who has stock?” to “who can price, explain, and turn stock fastest?”</p>
+      </aside>
+    </section>
+
+    <section class="grid kpi-grid">
+      <div class="card kpi">
+        <div class="label">UAE new-car registrations, H1 2025</div>
+        <div class="value">157k</div>
+        <div class="delta good">+11% YoY</div>
+      </div>
+      <div class="card kpi">
+        <div class="label">UAE vehicle sales, Q1 2026</div>
+        <div class="value">69.3k</div>
+        <div class="delta bad">-19.1% YoY</div>
+      </div>
+      <div class="card kpi">
+        <div class="label">DubiCars platform demand, H1 2025</div>
+        <div class="value">+42%</div>
+        <div class="delta good">strong demand signal</div>
+      </div>
+      <div class="card kpi">
+        <div class="label">Dubai used-car price index, 2025</div>
+        <div class="value">108</div>
+        <div class="delta warn">-20.6% from 2022 peak</div>
+      </div>
+      <div class="card kpi">
+        <div class="label">Chinese-brand demand share</div>
+        <div class="value">13%</div>
+        <div class="delta good">from 3% in 2024</div>
+      </div>
+      <div class="card kpi">
+        <div class="label">Dubai active vehicle base, Q1 2026</div>
+        <div class="value">4.85m</div>
+        <div class="delta good">+8.4% YoY proxy</div>
+      </div>
+    </section>
+
+    <section class="section" id="regime">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">The regime shift</h2>
+          <p class="section-note">The most important change is not simply “more cars.” It is more choice arriving faster than buyer urgency.</p>
+        </div>
+        <span class="tag">Core narrative</span>
+      </div>
+      <div class="regime">
+        <div class="regime-card">
+          <h3>2025: Growth still looked strong</h3>
+          <p>Registrations expanded, platform demand rose, tourism and airport traffic stayed strong, and Chinese brands gained visibility.</p>
+          <ul class="micro-list">
+            <li><strong>Demand:</strong> buyers were still active</li>
+            <li><strong>Supply:</strong> new brands and inventory arrived quickly</li>
+            <li><strong>Dealer mood:</strong> growth, opportunity, expansion</li>
+          </ul>
+        </div>
+        <div class="arrow">→</div>
+        <div class="regime-card">
+          <h3>2026: Stock turn became the game</h3>
+          <p>Inventory became heavier, mainstream prices softened, logistics risk increased, and dealers had to protect margin by moving faster.</p>
+          <ul class="micro-list">
+            <li><strong>Demand:</strong> more selective, slower conversion</li>
+            <li><strong>Supply:</strong> abundance, not scarcity</li>
+            <li><strong>Dealer mood:</strong> reprice, finance, explain, turn</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="charts">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Market signals dashboard</h2>
+          <p class="section-note">The data points tell a clean story: ownership base kept growing, but prices and stock velocity moved into a softer cycle.</p>
+        </div>
+        <span class="tag">Signals, not noise</span>
+      </div>
+
+      <div class="grid two-col">
+        <div class="chart-card">
+          <h3 class="chart-title">Dubai active vehicle base kept rising</h3>
+          <p class="chart-sub">Registered active vehicles proxy, millions. The base grew even while conversion slowed.</p>
+          <div class="chart-wrap">
+            <svg viewBox="0 0 560 245" role="img" aria-label="Line chart for active vehicles">
+              <line class="gridline" x1="45" y1="40" x2="540" y2="40" />
+              <line class="gridline" x1="45" y1="85" x2="540" y2="85" />
+              <line class="gridline" x1="45" y1="130" x2="540" y2="130" />
+              <line class="gridline" x1="45" y1="175" x2="540" y2="175" />
+              <line class="axis" x1="45" y1="205" x2="540" y2="205" />
+              <line class="axis" x1="45" y1="25" x2="45" y2="205" />
+              <polyline class="line-blue" points="45,188 144,161 243,134 342,107 441,80 540,53" />
+              <circle class="dot" cx="45" cy="188" r="5" stroke="#52b8ff" />
+              <circle class="dot" cx="144" cy="161" r="5" stroke="#52b8ff" />
+              <circle class="dot" cx="243" cy="134" r="5" stroke="#52b8ff" />
+              <circle class="dot" cx="342" cy="107" r="5" stroke="#52b8ff" />
+              <circle class="dot" cx="441" cy="80" r="5" stroke="#52b8ff" />
+              <circle class="dot" cx="540" cy="53" r="5" stroke="#52b8ff" />
+              <text class="svg-label" x="25" y="208">4.3</text>
+              <text class="svg-label" x="25" y="43">4.9</text>
+              <text class="svg-label" x="28" y="18">m</text>
+              <text class="svg-label" x="30" y="227">Q4'24</text>
+              <text class="svg-label" x="124" y="227">Q1'25</text>
+              <text class="svg-label" x="224" y="227">Q2'25</text>
+              <text class="svg-label" x="323" y="227">Q3'25</text>
+              <text class="svg-label" x="422" y="227">Q4'25</text>
+              <text class="svg-label" x="521" y="227">Q1'26</text>
+              <text class="svg-value" x="492" y="38">4.85m</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3 class="chart-title">Used prices normalised from the 2022 peak</h3>
+          <p class="chart-sub">Dubai used-car price index. Still above baseline, but no longer a shortage-pricing market.</p>
+          <div class="chart-wrap">
+            <svg viewBox="0 0 560 245" role="img" aria-label="Bar chart for used-car price index">
+              <line class="axis" x1="50" y1="205" x2="530" y2="205" />
+              <line class="axis" x1="50" y1="25" x2="50" y2="205" />
+              <line class="gridline" x1="50" y1="58" x2="530" y2="58" />
+              <line class="gridline" x1="50" y1="104" x2="530" y2="104" />
+              <line class="gridline" x1="50" y1="150" x2="530" y2="150" />
+              <rect x="105" y="45" width="88" height="160" rx="10" fill="#52b8ff" opacity=".85" />
+              <rect x="266" y="95" width="88" height="110" rx="10" fill="#ffca64" opacity=".9" />
+              <rect x="427" y="103" width="88" height="102" rx="10" fill="#42eadc" opacity=".8" />
+              <text class="svg-value" x="128" y="35">136</text>
+              <text class="svg-value" x="289" y="86">113</text>
+              <text class="svg-value" x="450" y="94">108</text>
+              <text class="svg-label" x="119" y="227">2022</text>
+              <text class="svg-label" x="280" y="227">2024</text>
+              <text class="svg-label" x="441" y="227">2025</text>
+              <text class="svg-label" x="18" y="209">100</text>
+              <text class="svg-label" x="18" y="60">140</text>
+              <text class="svg-value" x="305" y="40">-20.6% from peak</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3 class="chart-title">Inventory velocity became the pressure point</h3>
+          <p class="chart-sub">Approximate UAE online used-car average days-to-sell, Jan-Jul 2025. April improved; July slowed sharply.</p>
+          <div class="chart-wrap">
+            <svg viewBox="0 0 560 245" role="img" aria-label="Line chart for days to sell">
+              <line class="gridline" x1="45" y1="45" x2="540" y2="45" />
+              <line class="gridline" x1="45" y1="95" x2="540" y2="95" />
+              <line class="gridline" x1="45" y1="145" x2="540" y2="145" />
+              <line class="axis" x1="45" y1="205" x2="540" y2="205" />
+              <line class="axis" x1="45" y1="25" x2="45" y2="205" />
+              <polyline class="line-red" points="45,52 128,57 210,66 293,185 375,127 458,92 540,40" />
+              <circle class="dot" cx="45" cy="52" r="5" stroke="#ff6b77" />
+              <circle class="dot" cx="128" cy="57" r="5" stroke="#ff6b77" />
+              <circle class="dot" cx="210" cy="66" r="5" stroke="#ff6b77" />
+              <circle class="dot" cx="293" cy="185" r="5" stroke="#ff6b77" />
+              <circle class="dot" cx="375" cy="127" r="5" stroke="#ff6b77" />
+              <circle class="dot" cx="458" cy="92" r="5" stroke="#ff6b77" />
+              <circle class="dot" cx="540" cy="40" r="5" stroke="#ff6b77" />
+              <text class="svg-label" x="25" y="208">10</text>
+              <text class="svg-label" x="23" y="45">45</text>
+              <text class="svg-label" x="39" y="227">Jan</text>
+              <text class="svg-label" x="121" y="227">Feb</text>
+              <text class="svg-label" x="203" y="227">Mar</text>
+              <text class="svg-label" x="286" y="227">Apr</text>
+              <text class="svg-label" x="368" y="227">May</text>
+              <text class="svg-label" x="452" y="227">Jun</text>
+              <text class="svg-label" x="534" y="227">Jul</text>
+              <text class="svg-value" x="302" y="181">14.1d</text>
+              <text class="svg-value" x="470" y="34">42.2d</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h3 class="chart-title">Fuel cost added pressure after the shock window</h3>
+          <p class="chart-sub">UAE Special 95 petrol, AED/litre. Rising operating cost reinforced price sensitivity.</p>
+          <div class="chart-wrap">
+            <svg viewBox="0 0 560 245" role="img" aria-label="Line chart for Special 95 petrol price">
+              <line class="gridline" x1="45" y1="45" x2="540" y2="45" />
+              <line class="gridline" x1="45" y1="95" x2="540" y2="95" />
+              <line class="gridline" x1="45" y1="145" x2="540" y2="145" />
+              <line class="axis" x1="45" y1="205" x2="540" y2="205" />
+              <line class="axis" x1="45" y1="25" x2="45" y2="205" />
+              <polyline class="line-green" points="45,164 90,151 135,152 180,151 225,142 270,159 315,152 360,169 405,181 450,164 495,101 540,70" />
+              <circle class="dot" cx="45" cy="164" r="4" stroke="#65e6a5" />
+              <circle class="dot" cx="90" cy="151" r="4" stroke="#65e6a5" />
+              <circle class="dot" cx="135" cy="152" r="4" stroke="#65e6a5" />
+              <circle class="dot" cx="180" cy="151" r="4" stroke="#65e6a5" />
+              <circle class="dot" cx="225" cy="142" r="4" stroke="#65e6a5" />
+              <circle class="dot" cx="270" cy="159" r="4" stroke="#65e6a5" />
+              <circle class="dot" cx="315" cy="152" r="4" stroke="#65e6a5" />
+              <circle class="dot" cx="360" cy="169" r="4" stroke="#65e6a5" />
+              <circle class="dot" cx="405" cy="181" r="4" stroke="#65e6a5" />
+              <circle class="dot" cx="450" cy="164" r="4" stroke="#65e6a5" />
+              <circle class="dot" cx="495" cy="101" r="4" stroke="#65e6a5" />
+              <circle class="dot" cx="540" cy="70" r="4" stroke="#65e6a5" />
+              <text class="svg-label" x="18" y="209">2.2</text>
+              <text class="svg-label" x="18" y="45">3.7</text>
+              <text class="svg-label" x="37" y="227">Jun</text>
+              <text class="svg-label" x="166" y="227">Sep</text>
+              <text class="svg-label" x="307" y="227">Dec</text>
+              <text class="svg-label" x="438" y="227">Mar</text>
+              <text class="svg-label" x="530" y="227">May</text>
+              <text class="svg-value" x="452" y="45">+27% post-window avg</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="segments">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Dubai is not one car market</h2>
+          <p class="section-note">A sedan, a Chinese SUV, a German luxury car, and a Land Cruiser do not price the same way. Segment logic beats broad averages.</p>
+        </div>
+        <span class="tag">Segment intelligence</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Segment</th>
+              <th>Current read</th>
+              <th>Pricing implication</th>
+              <th>Signals to watch</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Economy cars</strong></td>
+              <td>Stable but highly price-sensitive. Buyers care about running cost and basic reliability.</td>
+              <td>Price tight to comparables. Small overpricing can kill conversion.</td>
+              <td>Fuel prices, mileage bands, finance offers, private-seller competition.</td>
+              <td><span class="status stable">stable</span></td>
+            </tr>
+            <tr>
+              <td><strong>Compact / mid-size sedans</strong></td>
+              <td>Softened faster than SUVs; reported down 5–8% from Q3 2025 peaks.</td>
+              <td>Do not anchor to late-2025 prices. Reprice earlier to protect turn.</td>
+              <td>Days-to-sell, discounting, sedan stock age, buyer substitution into Chinese SUVs.</td>
+              <td><span class="status soft">softer</span></td>
+            </tr>
+            <tr>
+              <td><strong>Compact / mid-size SUVs</strong></td>
+              <td>Slightly softer, but still structurally supported by family use and UAE preferences.</td>
+              <td>Good spec, warranty, and service history can still defend price.</td>
+              <td>RAV4, X-Trail, Tucson, Sportage pricing; new Chinese SUV offers.</td>
+              <td><span class="status soft">selective</span></td>
+            </tr>
+            <tr>
+              <td><strong>Full-size export-led SUVs</strong></td>
+              <td>Land Cruiser and Patrol remain firmer because they have local and export demand.</td>
+              <td>Apply export-demand premium. These behave less like normal consumer cars.</td>
+              <td>GCC/Africa/Asia export flow, auction demand, clean-history supply.</td>
+              <td><span class="status stable">firm</span></td>
+            </tr>
+            <tr>
+              <td><strong>Luxury sedans / SUVs</strong></td>
+              <td>More volatile; warranty, maintenance, and delivery risk matter heavily.</td>
+              <td>Value depends on confidence package: history, warranty, dealer support, logistics.</td>
+              <td>Premium inventory growth, delivery pauses, financing, warranty coverage.</td>
+              <td><span class="status volatile">volatile</span></td>
+            </tr>
+            <tr>
+              <td><strong>Chinese brands / EVs / hybrids</strong></td>
+              <td>Growing share and buyer interest; more choice, more features, stronger warranty offers.</td>
+              <td>They pressure used traditional brands by changing buyer value expectations.</td>
+              <td>Warranty length, charging access, resale confidence, new-model supply discipline.</td>
+              <td><span class="status stable">rising</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="shock">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">The shock hit flows, not the vehicle base</h2>
+          <p class="section-note">The Iran-related Gulf shock did not reduce Dubai’s vehicle base. It hit movement: trips, deliveries, shipping, confidence, and discretionary luxury buying.</p>
+        </div>
+        <span class="tag">Causal insight</span>
+      </div>
+      <div class="shock-strip">
+        <div class="shock-card">
+          <div class="metric" style="color:var(--red)">~-42%</div>
+          <div class="caption">Implied March-only YoY shock in Dubai Taxi trips based on Q1 / Jan-Feb disclosures.</div>
+        </div>
+        <div class="shock-card">
+          <div class="metric" style="color:var(--amber)">54.6→51.6</div>
+          <div class="caption">Dubai PMI moved down from February to April, showing weaker confidence and orders.</div>
+        </div>
+        <div class="shock-card">
+          <div class="metric" style="color:var(--orange)">+27%</div>
+          <div class="caption">Special 95 average rose from Dec-Feb to Mar-May, adding operating-cost pressure.</div>
+        </div>
+        <div class="shock-card">
+          <div class="metric" style="color:var(--purple)">paused</div>
+          <div class="caption">Luxury deliveries faced disruption, rerouting, and stranded shipments.</div>
+        </div>
+      </div>
+      <div class="grid two-col" style="margin-top:18px">
+        <div class="action-card">
+          <h3>What this means for pricing</h3>
+          <p>Do not treat geopolitical shocks as pure price shocks. First they appear as flow shocks: lower conversion, longer lead times, slower dealer response, higher logistics cost, and weaker buyer confidence.</p>
+        </div>
+        <div class="action-card">
+          <h3>What this means for analytics</h3>
+          <p>Pricing models should not only look at listing prices. They should include inventory age, days-to-sell, segment liquidity, export demand, logistics interruptions, and buyer-confidence proxies.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="algodriven">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Where AlgoDriven could turn this into product value</h2>
+          <p class="section-note">The market creates a clear use case for pricing intelligence: not one generic valuation, but a living decision layer for dealers.</p>
+        </div>
+        <span class="tag">Product opportunities</span>
+      </div>
+      <div class="grid three-col">
+        <div class="action-card">
+          <h3>1. Spec Confidence Score</h3>
+          <p>Flag pricing risk from wrong trim, non-GCC spec, missing service history, accident uncertainty, or weak warranty confidence.</p>
+        </div>
+        <div class="action-card">
+          <h3>2. Segment-Specific Depreciation</h3>
+          <p>Separate sedans, compact SUVs, export-grade SUVs, luxury cars, Chinese brands, hybrids, and EVs instead of forcing one curve.</p>
+        </div>
+        <div class="action-card">
+          <h3>3. Inventory Age Risk Alert</h3>
+          <p>Show the point where waiting for a higher sticker price becomes more expensive than repricing the car now.</p>
+        </div>
+        <div class="action-card">
+          <h3>4. Export Premium Detector</h3>
+          <p>Identify models whose prices are supported by GCC/Africa/Asia demand, not only local retail buyers.</p>
+        </div>
+        <div class="action-card">
+          <h3>5. Market Shock Overlay</h3>
+          <p>Connect external shocks to flows: fuel, freight, PMI, travel, lead times, delivery delays, and luxury demand.</p>
+        </div>
+        <div class="action-card">
+          <h3>6. Agentic Market Reports</h3>
+          <p>Generate podcast-ready market summaries for dealers: what changed, why it matters, and what action to take this week.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="podcast">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Podcast-ready hooks</h2>
+          <p class="section-note">These are the lines that make the analysis memorable instead of sounding like a spreadsheet readout.</p>
+        </div>
+        <span class="tag">Shareable insights</span>
+      </div>
+      <div class="grid podcast-grid">
+        <div class="quote-card">
+          <div class="num">01</div>
+          <blockquote>“Dubai did not lose cars. It lost urgency.”</blockquote>
+        </div>
+        <div class="quote-card">
+          <div class="num">02</div>
+          <blockquote>“A Land Cruiser in Dubai behaves more like a tradable asset than a normal used car.”</blockquote>
+        </div>
+        <div class="quote-card">
+          <div class="num">03</div>
+          <blockquote>“Year and mileage are the receipt. Spec, history, and confidence are the price.”</blockquote>
+        </div>
+        <div class="quote-card">
+          <div class="num">04</div>
+          <blockquote>“In 2026, dealers win by moving faster, not by holding out.”</blockquote>
+        </div>
+        <div class="quote-card">
+          <div class="num">05</div>
+          <blockquote>“Chinese brands did not just add cars. They rewrote the value ceiling.”</blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="outlook">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">12-month outlook</h2>
+          <p class="section-note">Base case: gradual normalisation, not a V-shaped rebound. The market is repricing to an abundant and more time-sensitive equilibrium.</p>
+        </div>
+        <span class="tag">Scenario view</span>
+      </div>
+      <div class="scenario">
+        <div class="scenario-card">
+          <h3>Best case</h3>
+          <div class="prob" style="color:var(--green)">25%</div>
+          <p>Shipping normalises, fuel prices ease, tourism stays strong, and Chinese OEM supply remains disciplined.</p>
+          <ul>
+            <li>Registrations: +8% to +12%</li>
+            <li>Used transactions: +8% to +12%</li>
+            <li>Days-to-sell: 25–30 days</li>
+          </ul>
+        </div>
+        <div class="scenario-card">
+          <h3>Likely case</h3>
+          <div class="prob" style="color:var(--amber)">55%</div>
+          <p>Partial logistics recovery, resilient tourism, available financing, but continued mass-market oversupply.</p>
+          <ul>
+            <li>Registrations: 0% to +4%</li>
+            <li>Used transactions: +3% to +6%</li>
+            <li>Days-to-sell: 32–38 days</li>
+          </ul>
+        </div>
+        <div class="scenario-card">
+          <h3>Worst case</h3>
+          <div class="prob" style="color:var(--red)">20%</div>
+          <p>Conflict extends, shipping disruption repeats, fuel stays high, tourism softens, and dealers overstock.</p>
+          <ul>
+            <li>Registrations: -8% to -12%</li>
+            <li>Used transactions: -5% to -10%</li>
+            <li>Days-to-sell: 45–55+ days</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="methodology">
+      <div class="section-head">
+        <div>
+          <h2 class="section-title">Methodology caveat that makes the analysis stronger</h2>
+          <p class="section-note">The dashboard is strongest when it is transparent about data quality instead of pretending every number is official transaction data.</p>
+        </div>
+        <span class="tag">Data discipline</span>
+      </div>
+      <p class="method"><strong>Data basis:</strong> The analysis uses a proxy stack: UAE registrations, Dubai active vehicle-base proxies, marketplace demand and listings, used-car price indices, dealer commentary, transport CPI, fuel prices, taxi-trip data, PMI, and logistics reports. Public monthly Dubai-level new-car registrations, used ownership transfers, auction clearing prices, and audited dealer margins were not reliably available. Therefore, the strongest claims are about <strong>direction, turning points, and relative segment behavior</strong>, not exact transaction microdata.</p>
+    </section>
+
+    <section class="final-box">
+      <h2>CEO summary</h2>
+      <p>Dubai’s auto market is moving from shortage-driven pricing into an intelligence-driven inventory cycle. The winners will not be the dealers with the highest sticker prices; they will be the ones who know exactly when to hold, when to reprice, which cars deserve a premium, and which cars are quietly becoming aged stock.</p>
+    </section>
+  </main>
+</body>
+</html>
