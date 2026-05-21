@@ -5,7 +5,6 @@ import {
   Building2,
   Car,
   CircleDollarSign,
-  Gauge,
   Plane,
   PackageSearch,
   Radar,
@@ -52,18 +51,32 @@ const portfolioMetrics = [
   { label: "Core output", value: "Insight", context: "dashboards plus executive studies" }
 ];
 
-const caseSignals = [
-  { label: "UAE new-car registrations, H1 2025", value: "157k", tone: "positive" },
-  { label: "UAE vehicle sales, Q1 2026", value: "69.3k", tone: "negative" },
-  { label: "DubiCars demand, H1 2025", value: "+42%", tone: "positive" },
-  { label: "Dubai used-car price index, 2025", value: "108", tone: "warning" }
-];
-
-const segmentRows = [
-  { segment: "Export-grade SUVs", direction: "Protected", score: 88 },
-  { segment: "Chinese brands", direction: "Share gain", score: 76 },
-  { segment: "Sedans", direction: "Repricing", score: 54 },
-  { segment: "Luxury stock", direction: "Selective", score: 49 }
+const projects = [
+  {
+    title: "UAE Automotive Pricing Intelligence",
+    sector: "Automotive",
+    status: "Live",
+    href: "/automotive",
+    summary:
+      "A market analysis case study reviewing pricing patterns, segment trends, and business implications for dealers and platforms.",
+    outputs: ["Market narrative", "Segment trends", "Dealer and platform implications"]
+  },
+  {
+    title: "Aviation Market Desk",
+    sector: "Aviation",
+    status: "Planned",
+    summary:
+      "A future desk for capacity, fare, route economics, passenger demand, and airline-facing market signals.",
+    outputs: ["Route demand", "Fare pressure", "Capacity shifts"]
+  },
+  {
+    title: "Real Estate Intelligence",
+    sector: "Real Estate",
+    status: "Planned",
+    summary:
+      "A future desk for supply, absorption, pricing, rents, and project positioning across property markets.",
+    outputs: ["Supply trends", "Absorption", "Pricing signals"]
+  }
 ];
 
 export default function Home() {
@@ -80,6 +93,7 @@ export default function Home() {
           </span>
         </Link>
         <nav className="topnav">
+          <a href="#projects">Projects</a>
           <Link href="/automotive">Automotive</Link>
           <a href="https://github.com/Alexey3250/signal-desk" target="_blank" rel="noreferrer">
             GitHub
@@ -101,10 +115,10 @@ export default function Home() {
             <span>Sector studies</span>
           </div>
           <div className="hero-actions">
-            <Link href="/automotive" className="button primary">
-              Open automotive desk
+            <a href="#projects" className="button primary">
+              Explore project catalog
               <ArrowUpRight size={17} aria-hidden="true" />
-            </Link>
+            </a>
             <a
               href="https://github.com/Alexey3250/signal-desk"
               className="button secondary"
@@ -162,63 +176,45 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="case-preview" aria-labelledby="case-heading">
-        <div className="case-intro">
-          <p className="eyebrow">First project</p>
-          <h2 id="case-heading">UAE Automotive Pricing Intelligence</h2>
+      <section className="section-band project-catalog" id="projects" aria-labelledby="projects-heading">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">Project bridge</p>
+            <h2 id="projects-heading">Open the desk you want to review</h2>
+          </div>
           <p>
-            A market analysis case study reviewing pricing patterns, segment trends, and
-            business implications for dealers and platforms.
+            The homepage stays as the portfolio overview. Each project opens on its own
+            route when it is ready.
           </p>
-          <Link href="/automotive" className="text-link">
-            Read the market study
-            <ArrowUpRight size={16} aria-hidden="true" />
-          </Link>
         </div>
 
-        <div className="dashboard-preview" aria-label="Automotive market signal preview">
-          <div className="panel-header">
-            <span>Automotive signal board</span>
-            <Gauge size={18} aria-hidden="true" />
-          </div>
-          <div className="signal-grid">
-            {caseSignals.map((signal) => (
-              <article className={`signal-card ${signal.tone}`} key={signal.label}>
-                <span>{signal.label}</span>
-                <strong>{signal.value}</strong>
-              </article>
-            ))}
-          </div>
-
-          <div className="split-dashboard">
-            <div className="mini-chart">
+        <div className="project-grid">
+          {projects.map((project) => (
+            <article
+              className={`project-card ${project.status === "Live" ? "is-live" : ""}`}
+              key={project.title}
+            >
               <div>
-                <span>Used price index</span>
-                <strong>Softening from the 2022 peak</strong>
+                <span className="project-sector">{project.sector}</span>
+                <strong className="project-status">{project.status}</strong>
               </div>
-              <svg viewBox="0 0 360 160" role="img" aria-label="Used price index trend chart">
-                <line x1="24" y1="132" x2="336" y2="132" />
-                <line x1="24" y1="28" x2="24" y2="132" />
-                <polyline points="24,56 86,34 148,52 210,72 272,96 336,110" />
-                <circle cx="86" cy="34" r="5" />
-                <circle cx="336" cy="110" r="5" />
-              </svg>
-            </div>
-
-            <div className="segment-stack" aria-label="Segment pressure scores">
-              {segmentRows.map((row) => (
-                <div className="segment-row" key={row.segment}>
-                  <div>
-                    <strong>{row.segment}</strong>
-                    <span>{row.direction}</span>
-                  </div>
-                  <div className="bar-track" aria-hidden="true">
-                    <span style={{ width: `${row.score}%` }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+              <h3>{project.title}</h3>
+              <p>{project.summary}</p>
+              <ul>
+                {project.outputs.map((output) => (
+                  <li key={output}>{output}</li>
+                ))}
+              </ul>
+              {project.href ? (
+                <Link href={project.href} className="text-link">
+                  Open project
+                  <ArrowUpRight size={16} aria-hidden="true" />
+                </Link>
+              ) : (
+                <span className="project-soon">Coming soon</span>
+              )}
+            </article>
+          ))}
         </div>
       </section>
 
