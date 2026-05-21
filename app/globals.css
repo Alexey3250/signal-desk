@@ -789,45 +789,49 @@ h1 {
 
 .chart-grid-layout {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .chart-card {
   display: grid;
-  gap: 16px;
-  padding: 16px;
+  align-content: start;
+  gap: 10px;
+  padding: 14px;
   box-shadow: 0 6px 22px rgba(17, 24, 39, 0.045);
 }
 
 .chart-card:nth-child(3) {
-  grid-column: 1 / -1;
+  grid-column: auto;
 }
 
 .chart-heading h3 {
-  margin-bottom: 5px;
-  font-size: 18px;
+  margin-bottom: 3px;
+  font-size: 15px;
+  line-height: 1.2;
 }
 
 .chart-heading p {
   margin-bottom: 0;
   color: var(--muted);
-  font-size: 14px;
+  font-size: 12px;
+  line-height: 1.35;
 }
 
 .chart-card > svg {
   width: 100%;
-  min-height: 250px;
+  height: auto;
+  min-height: 0;
 }
 
 .chart-card:nth-child(3) > svg {
   justify-self: center;
-  max-width: 780px;
+  max-width: none;
 }
 
 .chart-card text {
   fill: var(--muted);
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 800;
 }
 
@@ -837,13 +841,13 @@ h1 {
 
 .axis {
   stroke: #9aa8b4;
-  stroke-width: 1.4;
+  stroke-width: 1.2;
 }
 
 .line-blue,
 .line-red {
   fill: none;
-  stroke-width: 6;
+  stroke-width: 4.8;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -859,7 +863,7 @@ h1 {
 .dot-blue,
 .dot-red {
   fill: var(--surface);
-  stroke-width: 4;
+  stroke-width: 3.2;
 }
 
 .dot-blue {
@@ -872,7 +876,7 @@ h1 {
 
 .chart-callout {
   fill: var(--ink);
-  font-size: 15px;
+  font-size: 12px;
 }
 
 .chart-label-pill rect,
@@ -889,16 +893,16 @@ h1 {
 }
 
 .chart-label-pill text {
-  font-size: 13px;
+  font-size: 11px;
 }
 
 .chart-annotation text {
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .chart-annotation text:first-of-type {
   fill: var(--teal);
-  font-size: 13px;
+  font-size: 11px;
 }
 
 .bar-muted {
@@ -1180,6 +1184,17 @@ h1 {
     grid-template-columns: 1fr;
   }
 
+  .detail-shell .chart-card {
+    grid-template-columns: 220px minmax(0, 1fr);
+    align-items: center;
+    min-height: 190px;
+  }
+
+  .detail-shell .chart-card > svg {
+    justify-self: end;
+    max-width: 440px;
+  }
+
   .matrix-row {
     grid-template-columns: 1fr;
   }
@@ -1291,6 +1306,16 @@ h1 {
   .metric-card,
   .signal-card {
     min-height: 116px;
+  }
+
+  .detail-shell .chart-card {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .detail-shell .chart-card > svg {
+    justify-self: stretch;
+    max-width: none;
   }
 
   .sector-card {
